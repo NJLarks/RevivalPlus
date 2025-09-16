@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Country;
 use App\Models\Denomination;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,6 +20,8 @@ class ChurchFactory extends Factory
     public function definition(): array
     {
         return [
+            // FIX: Create a new User for each Church to satisfy the user_id constraint.
+            'user_id' => User::factory(),
             'name' => $this->faker->company() . ' Church',
             'denomination_id' => Denomination::inRandomOrder()->first()->id,
             'country_id' => Country::inRandomOrder()->first()->id,
@@ -29,10 +32,10 @@ class ChurchFactory extends Factory
             'latitude' => $this->faker->latitude(34, 40),
             'longitude' => $this->faker->longitude(-120, -80),
             'email' => $this->faker->unique()->safeEmail(),
-            'timezone' => $this->faker->timezone(),
             'website_url' => $this->faker->optional()->url(),
             'instagram_url' => $this->faker->optional()->url(),
             'facebook_url' => $this->faker->optional()->url(),
+            'timezone' => $this->faker->timezone(),
         ];
     }
 }
