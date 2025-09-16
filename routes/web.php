@@ -3,6 +3,7 @@
 use App\Models\Country;
 use App\Models\Denomination;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -13,9 +14,8 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    // This route now correctly points to your DashboardController
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
 });
 
 //registration
@@ -28,3 +28,4 @@ Route::get('/register', function () {
         'countries' => $countries,
     ]);
 })->name('register');
+
