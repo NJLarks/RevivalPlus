@@ -11,7 +11,7 @@ module.exports = {
         extend: {
             colors: {
                 // Light Mode Color Palette
-                'c1': '#3c0fd0ff', // Primary Blue
+                'c1': '#0000B0', // Primary Blue
                 'c2': '#384D48',   // Secondary Green-Grey
                 'c3': '#FBFBFB',   // Off-White Background
                 'c4': '#2F2F2F',   // Dark Grey Text
@@ -25,7 +25,7 @@ module.exports = {
                 'ch5': '#8B8B8B',
 
                 // Dark Mode Color Palette (d1, d2, etc.)
-                'd1': '#0101D1',   // Primary Blue (same as light mode for consistency)
+                'd1': '#8cebf9ff',   // Primary Blue (same as light mode for consistency)
                 'd2': '#384D48',   // Secondary Green-Grey (same as light mode for consistency)
                 'd3': '#1E1E1E',   // Main Dark Background (Inversion of c3)
                 'd4': '#F0F0F0',   // Light Text (Inversion of c4)

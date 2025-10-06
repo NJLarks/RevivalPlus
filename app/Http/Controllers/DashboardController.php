@@ -2,30 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
+use App\Models\Church;
 use App\Models\Verse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
     /**
-     * Show the application dashboard.
+     * Handle the incoming request and display the main dashboard.
+     * This is a single-action controller, invoked when the route points to the class.
      */
-    public function __invoke(): View
+    public function __invoke(Request $request)
     {
-        // Fetch a random verse from the database.
-        $verse = Verse::inRandomOrder()->first();
+        // 1. Fetch a random bible verse for the hero section.
+        // This query correctly selects a random record from your 'verses' table.
+        $heroVerse = Verse::inRandomOrder()->first();
 
-        // If no verses are found (e.g., before seeding), provide a default.
-        if (!$verse) {
-            $verse = new Verse([
-                'reference' => 'Welcome',
-                'text'      => 'Your journey begins here.'
-            ]);
-        }
+        // 2. Fetch the latest 8 churches.
+        // This query correctly gets the most recent churches to display in the first carousel.
+        $churches = Church::latest()->take(8)->get();
 
+        // 3. Fetch "Meetups" (Small Groups & Youth Groups).
+        // This query correctly finds all 'Event' models that are linked to an 'EventType'
+        // with a slug of 'small-group' or 'youth-night'.
+        $meetups = Event::whereHas('eventType', function ($query) {
+            $query->whereIn('slug', ['small-group', 'youth-night']);
+        })->with(['church', 'eventType'])->orderBy('day_of_week')->orderBy('start_time')->take(8)->get();
+
+        // 4. Fetch other "Events" (Worship Nights & Prayer Nights).
+        // This query correctly finds all 'Event' models for worship and prayer nights.
+        $events = Event::whereHas('eventType', function ($query) {
+            $query->whereIn('slug', ['worship-nights', 'prayer-nights']);
+        })->with(['church', 'eventType'])->orderBy('day_of_week')->orderBy('start_time')->take(8)->get();
+
+        // 5. Fetch "Programs" (Courses & Studies).
+        // This query correctly finds all 'Event' models for discipleship and bible study.
+        $programs = Event::whereHas('eventType', function ($query) {
+            $query->whereIn('slug', ['discipleship-course', 'bible-study']);
+        })->with(['church', 'eventType'])->orderBy('day_of_week')->orderBy('start_time')->take(8)->get();
+
+
+        // Finally, this correctly returns the 'dashboard' view and passes all the
+        // data collections to it, making them available to your carousel components.
         return view('dashboard', [
-            'verse' => $verse,
+            'heroVerse' => $heroVerse,
+            'churches' => $churches,
+            'meetups' => $meetups,
+            'events' => $events,
+            'programs' => $programs,
         ]);
     }
 }
+
