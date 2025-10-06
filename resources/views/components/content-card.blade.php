@@ -35,7 +35,7 @@
                 <div class="absolute bottom-2 left-1/2 flex -translate-x-1/2 space-x-2" id="card-{{ $item->id }}-carousel-dots">
                     @foreach ($photos as $index => $photoUrl)
                         <button @click="activeSlide = {{ $index + 1 }}" :class="{ 'bg-white scale-110': activeSlide === {{ $index + 1 }}, 'bg-white/50': activeSlide !== {{ $index + 1 }} }" class="h-2 w-2 rounded-full transition-all duration-300 focus:outline-none" aria-label="Go to slide {{ $index + 1 }}"></button>
-                    @endforeach
+                    @endforeach 
                 </div>
             </div>
         </div>
